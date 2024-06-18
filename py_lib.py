@@ -39,24 +39,11 @@ def print_model_summary(model):
 
 
 
-    cfg = Config(debug=True)
-    layer = cls(cfg).to(device)
-    layer.load_state_dict(gpt2_layer.state_dict(), strict=False)
-    print("Input shape:", input.shape)
-    output = layer(input)
-    if isinstance(output, tuple): output = output[0]
-    print("Output shape:", output.shape)
-    try: reference_output = gpt2_layer(input)
-    except: reference_output = gpt2_layer(input, input, input)
-    print("Reference output shape:", reference_output.shape, "\n")
-    comparison = torch.isclose(output, reference_output, atol=1e-4, rtol=1e-3)
-    print(f"{comparison.sum()/comparison.numel():.2%} of the values are correct\n")
-
-def isntantiate_layer(cls, gpt2_layer, input, cfg):
-    model_tsfm = cls(cfg).to(device)
-    model_tsfm.load_state_dict(gpt2_layer.state_dict(), strict=False)
-    print("Input shape:", input.shape)
-    output = model_tsfm(input)
-    if isinstance(output, tuple): output = output[0]
-    print("Output shape:", output.shape)
-    return output, model_tsfm
+# def instantiate_layer(cls, gpt2_layer, input, cfg):
+#     model_tsfm = cls(cfg).to(device)
+#     model_tsfm.load_state_dict(gpt2_layer.state_dict(), strict=False)
+#     print("Input shape:", input.shape)
+#     output = model_tsfm(input)
+#     if isinstance(output, tuple): output = output[0]
+#     print("Output shape:", output.shape)
+#     return output, model_tsfm
